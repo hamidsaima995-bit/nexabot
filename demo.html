@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lahore Dental Clinic</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;color:#1b2431;line-height:1.6;background:#fff}
+  .bar{background:#0d9488;color:#fff;padding:14px 0;font-size:14px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .bar .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  header{border-bottom:1px solid #e8edf3;padding:18px 0;position:sticky;top:0;background:#fff;z-index:10}
+  header .wrap{display:flex;align-items:center;justify-content:space-between}
+  .logo{font-size:20px;font-weight:700;color:#0d9488}
+  nav a{margin-left:26px;color:#5a6b82;text-decoration:none;font-size:15px}
+  nav a:hover{color:#0d9488}
+  .hero{padding:76px 0;background:linear-gradient(160deg,#f0fdfa,#fff)}
+  .hero h1{font-size:44px;line-height:1.15;letter-spacing:-1px;margin-bottom:18px;max-width:620px}
+  .hero p{font-size:18px;color:#5a6b82;max-width:540px;margin-bottom:28px}
+  .btn{display:inline-block;background:#0d9488;color:#fff;padding:13px 26px;border-radius:8px;
+       text-decoration:none;font-weight:600}
+  section{padding:64px 0}
+  h2{font-size:28px;margin-bottom:28px;letter-spacing:-0.5px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+  .card{border:1px solid #e8edf3;border-radius:12px;padding:22px}
+  .card h3{font-size:17px;margin-bottom:8px}
+  .card p{color:#5a6b82;font-size:15px}
+  .price{color:#0d9488;font-weight:600;margin-top:10px}
+  .alt{background:#f7f9fb}
+  table{width:100%;border-collapse:collapse;font-size:15px}
+  td{padding:11px 0;border-bottom:1px solid #e8edf3}
+  td:last-child{text-align:right;color:#5a6b82}
+  footer{background:#1b2431;color:#9aa8bd;padding:36px 0;font-size:14px}
+  .note{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:16px 18px;
+        font-size:14px;color:#78560c;margin-top:30px}
+  @media(max-width:640px){.hero h1{font-size:32px}nav{display:none}}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="wrap">
+  <span>📍 12-A Main Boulevard, Gulberg III, Lahore</span>
+  <span>📞 042-3577-1234</span>
+</div></div>
+
+<header><div class="wrap">
+  <div class="logo">Lahore Dental Clinic</div>
+  <nav>
+    <a href="#services">Services</a>
+    <a href="#doctors">Doctors</a>
+    <a href="#hours">Hours</a>
+  </nav>
+</div></header>
+
+<div class="hero"><div class="wrap">
+  <h1>Dental care you can actually afford.</h1>
+  <p>Serving Gulberg since 2015. Same-day appointments, transparent pricing, and no treatment you don't need.</p>
+  <a class="btn" href="#">Book an appointment</a>
+</div></div>
+
+<section id="services"><div class="wrap">
+  <h2>Services</h2>
+  <div class="grid">
+    <div class="card"><h3>Teeth Cleaning</h3><p>Full scaling and polishing.</p><div class="price">PKR 5,000</div></div>
+    <div class="card"><h3>Root Canal</h3><p>Single or multi-rooted teeth.</p><div class="price">PKR 15,000 – 25,000</div></div>
+    <div class="card"><h3>Braces</h3><p>Full orthodontic treatment.</p><div class="price">PKR 120,000 – 180,000</div></div>
+    <div class="card"><h3>Implants</h3><p>Titanium implant with crown.</p><div class="price">PKR 90,000 per implant</div></div>
+  </div>
+</div></section>
+
+<section class="alt" id="doctors"><div class="wrap">
+  <h2>Our doctors</h2>
+  <div class="grid">
+    <div class="card"><h3>Dr. Ayesha Khan</h3><p>BDS, FCPS — Orthodontist<br>Mon, Wed, Fri</p></div>
+    <div class="card"><h3>Dr. Bilal Ahmed</h3><p>BDS, MDS — Endodontist<br>Tue, Thu, Sat</p></div>
+  </div>
+</div></section>
+
+<section id="hours"><div class="wrap">
+  <h2>Opening hours</h2>
+  <table>
+    <tr><td>Monday – Saturday</td><td>10:00 AM – 8:00 PM</td></tr>
+    <tr><td>Sunday</td><td>Closed</td></tr>
+    <tr><td>Emergency line</td><td>Open 24/7</td></tr>
+  </table>
+
+  <div class="note">
+    <strong>This is a NexaBot demo.</strong> The clinic is fictional. Click the chat button in the
+    corner and ask about prices, timings, doctors, or payment methods — the bot answers only from
+    this clinic's information, and says so plainly when it doesn't know.
+  </div>
+</div></section>
+
+<footer><div class="wrap">© 2026 Lahore Dental Clinic — demo site for NexaBot</div></footer>
+
+<!-- ============ NexaBot widget ============ -->
+<script
+  src="http://localhost:3001/widget.js"
+  data-bot-id="REPLACE_WITH_BOT_ID"
+  data-api="http://localhost:3001"
+  defer></script>
+
+</body>
+</html>
