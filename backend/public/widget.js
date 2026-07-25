@@ -64,6 +64,25 @@
     ".launcher:hover{transform:scale(1.06)}",
     ".launcher:focus-visible{outline:3px solid #fff;outline-offset:2px}",
     ".launcher svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}",
+    // attention pulse ring around the launcher until first opened
+    ".launcher.pulse::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid var(--c);animation:pulsering 2s ease-out infinite}",
+    "@keyframes pulsering{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.7);opacity:0}}",
+    // small label pill next to the button: 'Chat with us'
+    ".label{position:fixed;bottom:34px;" +
+      (POSITION === "left" ? "left:84px;" : "right:84px;") +
+      "background:#fff;color:#1a2233;padding:9px 14px;border-radius:20px;box-shadow:0 4px 16px rgba(0,0,0,.16);font-size:13px;font-weight:600;white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:6px;animation:labelin .4s ease}",
+    ".label .dot{width:7px;height:7px;border-radius:50%;background:#4ade80}",
+    "@keyframes labelin{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}",
+    // teaser message bubble that pops up on its own
+    ".teaser{position:fixed;bottom:88px;" +
+      (POSITION === "left" ? "left:20px;" : "right:20px;") +
+      "max-width:230px;background:#fff;color:#1a2233;padding:12px 14px;border-radius:14px;" +
+      (POSITION === "left" ? "border-bottom-left-radius:4px;" : "border-bottom-right-radius:4px;") +
+      "box-shadow:0 8px 28px rgba(0,0,0,.2);font-size:14px;line-height:1.4;cursor:pointer;animation:teaserin .35s ease}",
+    ".teaser-x{position:absolute;top:-8px;" +
+      (POSITION === "left" ? "left:-8px;" : "right:-8px;") +
+      "width:22px;height:22px;border-radius:50%;background:#1a2233;color:#fff;border:none;font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}",
+    "@keyframes teaserin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}",
     ".panel{position:fixed;bottom:88px;" +
       (POSITION === "left" ? "left:20px;" : "right:20px;") +
       "width:370px;max-width:calc(100vw - 32px);height:min(560px,calc(100vh - 120px));background:#fff;border-radius:16px;box-shadow:0 18px 50px rgba(0,0,0,.24);display:none;flex-direction:column;overflow:hidden}",
@@ -100,9 +119,10 @@
   var wrap = document.createElement("div");
   wrap.className = "wrap";
   wrap.innerHTML =
-    '<button class="launcher" part="launcher" aria-label="Open chat">' +
+    '<button class="launcher pulse" part="launcher" aria-label="Open chat">' +
     '<svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>' +
     "</button>" +
+    '<div class="label" data-label><span class="dot"></span>Chat with us</div>' +
     '<div class="panel" role="dialog" aria-label="Chat window">' +
     '<div class="head">' +
     '<div class="avatar" data-initial>A</div>' +
@@ -123,6 +143,7 @@
   root.appendChild(wrap);
 
   var launcher = wrap.querySelector(".launcher");
+  var labelEl = wrap.querySelector("[data-label]");
   var panel = wrap.querySelector(".panel");
   var closeBtn = wrap.querySelector(".close");
   var bodyEl = wrap.querySelector("[data-body]");
@@ -224,10 +245,47 @@
   }
 
   // ---------- Events ----------
+  var teaserEl = null;
+
+  function removeTeaser() {
+    if (teaserEl) {
+      teaserEl.remove();
+      teaserEl = null;
+    }
+  }
+
+  function hideLabelAndPulse() {
+    launcher.classList.remove("pulse");
+    if (labelEl) labelEl.style.display = "none";
+  }
+
+  function showTeaser() {
+    if (isOpen || teaserEl) return;
+    var msg = config.welcome_message || "Hi! 👋 Have a question? I'm here to help.";
+    teaserEl = document.createElement("div");
+    teaserEl.className = "teaser";
+    var text = document.createElement("span");
+    text.textContent = msg;
+    var x = document.createElement("button");
+    x.className = "teaser-x";
+    x.setAttribute("aria-label", "Dismiss");
+    x.innerHTML = "&times;";
+    x.addEventListener("click", function (e) {
+      e.stopPropagation();
+      removeTeaser();
+    });
+    teaserEl.appendChild(x);
+    teaserEl.appendChild(text);
+    teaserEl.addEventListener("click", toggle);
+    wrap.appendChild(teaserEl);
+  }
+
   function toggle() {
     isOpen = !isOpen;
     panel.classList.toggle("open", isOpen);
     launcher.setAttribute("aria-label", isOpen ? "Close chat" : "Open chat");
+    hideLabelAndPulse();
+    removeTeaser();
     if (isOpen) {
       if (bodyEl.children.length === 0) {
         addMessage(config.welcome_message, "bot");
@@ -239,8 +297,15 @@
   }
 
   launcher.addEventListener("click", toggle);
+  if (labelEl) labelEl.addEventListener("click", toggle);
   closeBtn.addEventListener("click", toggle);
   sendBtn.addEventListener("click", send);
+
+  // Auto-pop a teaser bubble a few seconds after load, to draw the eye —
+  // only once, and never if the visitor has already opened the chat.
+  setTimeout(function () {
+    if (!isOpen) showTeaser();
+  }, 4000);
 
   inputEl.addEventListener("keydown", function (e) {
     if (e.key === "Enter" && !e.shiftKey) {
