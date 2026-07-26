@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VANYA — NexaBot Live Demo</title>
+  <meta name="description" content="A live demo of NexaBot by Ninja Tech, running on a sample of the Vanya clothing store." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23b8860b'/%3E%3Ctext x='16' y='23' font-size='16' text-anchor='middle' fill='%23fff' font-family='serif'%3EV%3C/text%3E%3C/svg%3E" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap');
+    :root{
+      --ink:#2b2620; --gold:#b8860b; --gold-d:#8a6508;
+      --cream:#faf7f2; --sand:#f0e9df; --line:#e6ddd0; --muted:#8a8073;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--cream);color:var(--ink);font-family:'Jost',sans-serif;line-height:1.7}
+    .ribbon{
+      background:linear-gradient(90deg,#8b5cf6,#c084fc,#e879f9);color:#160a24;
+      text-align:center;padding:10px 16px;font-weight:500;font-size:14px;letter-spacing:.3px;
+    }
+    .ribbon a{color:#160a24;font-weight:600}
+    nav{
+      background:var(--cream);border-bottom:1px solid var(--line);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:20px 6vw;position:sticky;top:0;z-index:10;
+    }
+    .logo{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;letter-spacing:6px;color:var(--ink)}
+    .nav-links{display:flex;gap:32px}
+    .nav-links a{color:var(--ink);text-decoration:none;font-weight:400;font-size:13px;letter-spacing:1.5px;text-transform:uppercase}
+    .nav-links a:hover{color:var(--gold)}
+    .hero{
+      position:relative;text-align:center;padding:0;
+      background:linear-gradient(rgba(43,38,32,.28),rgba(43,38,32,.28)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23d8cbb8'/%3E%3C/svg%3E");
+      background-size:cover;background-position:center;
+      min-height:62vh;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;
+    }
+    .hero .eyebrow{font-size:12px;letter-spacing:5px;text-transform:uppercase;margin-bottom:18px;opacity:.9}
+    .hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,7vw,72px);font-weight:500;line-height:1.05;letter-spacing:1px}
+    .hero p{margin:20px 0 30px;font-weight:300;font-size:17px;letter-spacing:.5px}
+    .btn{display:inline-block;background:var(--ink);color:#fff;padding:15px 40px;text-decoration:none;
+      font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:400;transition:background .25s}
+    .btn:hover{background:var(--gold)}
+    .section{padding:70px 6vw;max-width:1200px;margin:0 auto}
+    .section h2{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:500;text-align:center;margin-bottom:8px;letter-spacing:1px}
+    .section .sub{text-align:center;color:var(--muted);margin-bottom:48px;font-weight:300;letter-spacing:.5px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px}
+    .card{text-align:center}
+    .card .img{aspect-ratio:3/4;background:linear-gradient(135deg,#e8ddc9,#d8c8ad);border-radius:2px;margin-bottom:16px;
+      display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:44px;color:#fff;opacity:.85}
+    .card h4{font-weight:400;font-size:15px;letter-spacing:1px;margin-bottom:6px}
+    .card .price{color:var(--gold-d);font-weight:500;font-size:15px}
+    .info-band{background:var(--sand);padding:44px 6vw;display:flex;flex-wrap:wrap;justify-content:center;gap:48px;text-align:center}
+    .info-band .item{max-width:200px}
+    .info-band .item .t{font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:6px}
+    .info-band .item .d{font-size:13px;color:var(--muted);letter-spacing:.5px}
+    .prompt{max-width:900px;margin:0 auto;padding:56px 6vw;text-align:center}
+    .prompt .box{background:#fff;border:1px solid var(--line);border-radius:4px;padding:32px}
+    .prompt h3{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;margin-bottom:12px}
+    .prompt p{color:var(--muted);font-weight:300}
+    .prompt .q{display:inline-block;margin:6px;padding:8px 16px;background:var(--sand);border-radius:30px;font-size:13px;color:var(--ink)}
+    footer{background:var(--ink);color:#ccc4b6;text-align:center;padding:40px 6vw;font-size:13px;font-weight:300;letter-spacing:.5px}
+    footer a{color:var(--gold);text-decoration:none}
+    @media(max-width:700px){.nav-links{display:none}}
+  </style>
+</head>
+<body>
+
+  <div class="ribbon">
+    ✦ This is a live demo of <strong>NexaBot</strong> by Ninja Tech — try the chat bubble, bottom-right. &nbsp;<a href="portfolio.html">← Back to Ninja Tech</a>
+  </div>
+
+  <nav>
+    <div class="logo">VANYA</div>
+    <div class="nav-links">
+      <a href="#new">New In</a>
+      <a href="#collections">Collections</a>
+      <a href="#care">Customer Care</a>
+      <a href="#demo">Ask the bot</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="eyebrow">Sample Store — Demonstration</div>
+    <h1>Timeless elegance,<br>woven for you.</h1>
+    <p>Eastern &amp; Western wear · premium fabrics · Lahore</p>
+    <a href="#demo" class="btn">Ask our assistant</a>
+  </header>
+
+  <section class="section" id="new">
+    <h2>New In</h2>
+    <p class="sub">Fresh arrivals that redefine everyday elegance.</p>
+    <div class="grid">
+      <div class="card"><div class="img">CF-001</div><h4>Embroidered Kameez</h4><div class="price">Rs. 14,500</div></div>
+      <div class="card"><div class="img">CF-002</div><h4>Silk Co-ord Set</h4><div class="price">Rs. 15,500</div></div>
+      <div class="card"><div class="img">SM-030</div><h4>Green Kurta</h4><div class="price">Rs. 11,500</div></div>
+      <div class="card"><div class="img">SM-029</div><h4>Pastel Pink Kameez</h4><div class="price">Rs. 11,500</div></div>
+    </div>
+  </section>
+
+  <div class="info-band" id="care">
+    <div class="item"><div class="t">Free Shipping</div><div class="d">Nationwide, on every order</div></div>
+    <div class="item"><div class="t">Secure Payment</div><div class="d">COD, Card, JazzCash &amp; EasyPaisa</div></div>
+    <div class="item"><div class="t">Customer Care</div><div class="d">We are here to help</div></div>
+    <div class="item"><div class="t">Worldwide Delivery</div><div class="d">Doorstep, worldwide</div></div>
+  </div>
+
+  <div class="prompt" id="demo">
+    <div class="box">
+      <h3>Have a question?</h3>
+      <p>Open the chat bubble in the bottom-right corner and ask anything:</p>
+      <div style="margin-top:18px">
+        <span class="q">Delivery kitne din mein hoti hai?</span>
+        <span class="q">Shipping charges?</span>
+        <span class="q">Return kaise karun?</span>
+        <span class="q">COD available hai?</span>
+        <span class="q">Store kahan hai?</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>This is a demonstration built by <strong style="color:#fff">Ninja Tech</strong> to show NexaBot in action.<br>
+    The assistant answers instantly, 24/7 — using only the information the business provides.</p>
+    <p style="margin-top:12px"><a href="portfolio.html">← Back to Ninja Tech portfolio</a></p>
+  </footer>
+
+  <!-- LIVE NexaBot — Vanya Assistant -->
+  <script src="https://nexabot-production-3a24.up.railway.app/widget.js"
+          data-bot-id="f05e092a-ee52-474c-bec8-f7a0814cf1d7"
+          data-api="https://nexabot-production-3a24.up.railway.app"
+          defer></script>
+</body>
+</html>
